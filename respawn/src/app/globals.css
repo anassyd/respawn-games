@@ -1,0 +1,49 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --void: 234 50% 3%;      /* #040510 deep space */
+  --deep: 236 38% 8%;      /* panels */
+  --star: 220 40% 96%;     /* text */
+  --dim: 228 18% 66%;      /* secondary text */
+  --ion: 186 100% 60%;     /* cyan accent */
+  --plasma: 286 95% 66%;   /* violet-magenta accent */
+  --solar: 28 100% 60%;    /* scores, highlights */
+  --line: 230 30% 22%;
+}
+
+@layer base {
+  html { background: hsl(var(--void)); color-scheme: dark; }
+  body { @apply bg-void font-sans text-star antialiased; min-height: 100vh; overflow-x: hidden; }
+  h1, h2, h3 { @apply font-display uppercase tracking-wide; }
+  ::selection { background: hsl(var(--ion) / 0.35); color: white; }
+  :focus-visible { outline: 2px solid hsl(var(--ion)); outline-offset: 3px; border-radius: 6px; }
+  ::-webkit-scrollbar { width: 10px; height: 8px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: hsl(var(--line)); border-radius: 99px; }
+}
+
+@layer components {
+  /* Frosted "cockpit glass" panel */
+  .glass { @apply border border-white/10 bg-white/[0.035] backdrop-blur-xl; }
+  /* HUD corner brackets */
+  .hud { position: relative; }
+  .hud::before, .hud::after {
+    content: ""; position: absolute; width: 14px; height: 14px; pointer-events: none;
+    border-color: hsl(var(--ion) / 0.8); transition: all .35s cubic-bezier(.22,1,.36,1); opacity: 0;
+  }
+  .hud::before { top: -1px; left: -1px; border-top: 2px solid; border-left: 2px solid; }
+  .hud::after { bottom: -1px; right: -1px; border-bottom: 2px solid; border-right: 2px solid; }
+  .hud:hover::before, .hud:hover::after, .hud:focus-within::before, .hud:focus-within::after { opacity: 1; width: 22px; height: 22px; }
+  .text-glow { text-shadow: 0 0 24px hsl(var(--ion) / 0.55); }
+  .label { @apply font-mono text-[11px] uppercase tracking-[0.22em] text-dim; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar { scrollbar-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+@keyframes shimmer { from { transform: translateX(-100%); } to { transform: translateX(100%); } }
